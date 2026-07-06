@@ -73,7 +73,8 @@ def safe_extract_json(text: str) -> dict:
                 pass
 
     return {}
-    @app.middleware("http")
+    
+@app.middleware("http")
 async def custom_middleware(request: Request, call_next):
     start_time = time.time()
 
