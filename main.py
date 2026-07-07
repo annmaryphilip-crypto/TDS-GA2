@@ -131,18 +131,19 @@ async def custom_middleware(request: Request, call_next):
     response.headers["X-Request-ID"] = req_id
     response.headers["X-Process-Time"] = f"{process_time:.6f}"
 
-   if origin:
-    if path == "/ping":
-        if origin == config.Q10_ALLOWED_ORIGIN or origin == config.EXAM_PORTAL_ORIGIN:
-            response.headers["Access-Control-Allow-Origin"] = origin
+      if origin:
+        if path == "/ping":
+            if origin == config.Q10_ALLOWED_ORIGIN or origin == config.EXAM_PORTAL_ORIGIN:
+                response.headers["Access-Control-Allow-Origin"] = origin
 
-    elif path == "/stats":
-        if origin == config.Q1_ALLOWED_ORIGIN:
-            response.headers["Access-Control-Allow-Origin"] = origin
+        elif path == "/stats":
+            if origin == config.Q1_ALLOWED_ORIGIN:
+                response.headers["Access-Control-Allow-Origin"] = origin
 
-    else:
-        response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "*"
+        else:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "*"
     response.headers["Access-Control-Expose-Headers"] = "*"
 
