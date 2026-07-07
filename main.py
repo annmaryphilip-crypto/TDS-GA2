@@ -169,6 +169,30 @@ async def stats(values: str = ""):
         "max": max(nums),
         "mean": round(sum(nums) / len(nums), 6)
     }
+    # --- Q2 ---
+@app.post("/verify")
+async def verify_token(request: Request):
+    try:
+        body = await request.json()
+        token = body.get("token")
+        claims = jwt.decode(
+            token,
+            config.PUBLIC_KEY_PEM.strip(),
+            algorithms=["RS256"],
+            issuer=config.ISSUER,
+            audience=config.AUDIENCE
+        )
+        return {
+            "valid": True,
+            "email": claims.get("email", ""),
+            "sub": claims.get("sub", ""),
+            "aud": claims.get("aud", "")
+        }
+    except Exception:
+        return JSONResponse(
+            status_code=401,
+            content={"valid": False}
+        )
    # --- Q3 ---
 @app.get("/effective-config")
 async def get_config(request: Request):
